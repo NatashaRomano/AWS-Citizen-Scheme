@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Citizen Scheme Analytics Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/dashboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+<div class="logo">
+🏛 Citizen Analytics Dashboard
+</div>
+
+<div class="nav-links">
+
+<a href="index.html">Citizen Portal</a>
+
+<button id="refreshBtn">
+🔄 Refresh
+</button>
+
+</div>
+
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+<h1>Government Scheme Analytics</h1>
+
+<p>
+Monitor citizen usage, discover trends,
+analyze state-wise participation and scheme popularity.
+</p>
+
+</section>
+
+<!-- ================= KPI CARDS ================= -->
+
+<div class="cards">
+
+<div class="card">
+
+<div class="icon">
+📊
+</div>
+
+<div>
+
+<h3>Total Searches</h3>
+
+<h1 id="totalSearches">0</h1>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+🏆
+</div>
+
+<div>
+
+<h3>Popular Category</h3>
+
+<h1 id="topCategory">-</h1>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+🌍
+</div>
+
+<div>
+
+<h3>Top State</h3>
+
+<h1 id="topState">-</h1>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+📅
+</div>
+
+<div>
+
+<h3>Today's Searches</h3>
+
+<h1 id="todaySearches">0</h1>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CHARTS ================= -->
+
+<div class="charts">
+
+<div class="chart-card">
+
+<h2>Searches by Category</h2>
+
+<canvas id="categoryChart"></canvas>
+
+</div>
+
+<div class="chart-card">
+
+<h2>State Distribution</h2>
+
+<canvas id="stateChart"></canvas>
+
+</div>
+
+</div>
+
+<div class="charts">
+
+<div class="chart-card full">
+
+<h2>Daily Search Trend</h2>
+
+<canvas id="trendChart"></canvas>
+
+</div>
+
+</div>
+
+<!-- ================= TABLE ================= -->
+
+<div class="table-container">
+
+<h2>Analytics Summary</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Metric</th>
+
+<th>Value</th>
+
+</tr>
+
+</thead>
+
+<tbody id="summaryTable">
+
+<tr>
+
+<td>Total Searches</td>
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>Most Popular Category</td>
+
+<td>-</td>
+
+</tr>
+
+<tr>
+
+<td>Most Active State</td>
+
+<td>-</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- ================= FUTURE AI ================= -->
+
+<div class="prediction-box">
+
+<h2>
+🤖 AI Insights
+</h2>
+
+<div class="prediction">
+
+<p id="predictionText">
+
+Future prediction will appear here using AWS Bedrock or Amazon SageMaker.
+
+</p>
+
+</div>
+
+</div>
+
+<!-- ================= LOADING ================= -->
+
+<div id="loading" class="loading">
+
+<div class="spinner"></div>
+
+<p>Loading Dashboard...</p>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+Citizen Scheme Assistant Dashboard
+
+<br><br>
+
+Built using
+
+AWS Lambda • DynamoDB • API Gateway • Amplify • Chart.js
+
+</footer>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
