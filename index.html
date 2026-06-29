@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Citizen Scheme Eligibility Assistant</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+min-height:100vh;
+color:white;
+}
+
+nav{
+padding:20px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+}
+
+.logo{
+font-size:24px;
+font-weight:700;
+color:#38bdf8;
+}
+
+.hero{
+text-align:center;
+padding:60px 20px;
+}
+
+.hero h1{
+font-size:3rem;
+margin-bottom:15px;
+}
+
+.hero p{
+color:#cbd5e1;
+max-width:700px;
+margin:auto;
+}
+
+.container{
+width:90%;
+max-width:1000px;
+margin:auto;
+}
+
+.form-card{
+background:white;
+color:black;
+padding:35px;
+border-radius:20px;
+box-shadow:0 10px 40px rgba(0,0,0,.3);
+margin-top:30px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+input,select{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:15px;
+}
+
+button{
+margin-top:25px;
+width:100%;
+padding:15px;
+background:#0ea5e9;
+border:none;
+border-radius:12px;
+font-size:18px;
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#0284c7;
+transform:translateY(-2px);
+}
+
+.results{
+margin-top:40px;
+}
+
+.scheme-card{
+background:white;
+color:black;
+padding:25px;
+border-radius:18px;
+margin-bottom:20px;
+box-shadow:0 8px 25px rgba(0,0,0,.2);
+animation:fadeIn .6s ease;
+}
+
+.scheme-card h3{
+color:#0284c7;
+margin-bottom:10px;
+}
+
+.badge{
+display:inline-block;
+padding:6px 12px;
+background:#e0f2fe;
+color:#0284c7;
+border-radius:20px;
+font-size:12px;
+margin-bottom:10px;
+}
+
+.loading{
+display:none;
+text-align:center;
+margin-top:30px;
+}
+
+.spinner{
+width:50px;
+height:50px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #38bdf8;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+footer{
+text-align:center;
+padding:40px;
+color:#94a3b8;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:2rem;
+}
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">Citizen Scheme Assistant</div>
+<div>Government Benefits Finder</div>
+</nav>
+
+<section class="hero">
+
+<h1>Find Government Schemes Instantly</h1>
+
+<p>
+Enter your details and discover scholarships,
+startup grants, farmer benefits, business loans,
+and welfare schemes you may be eligible for.
+</p>
+
+</section>
+
+<div class="container">
+
+<div class="form-card">
+
+<div class="form-grid">
+<div>
+  <label>Name</label>
+  <input id="name" placeholder="Enter Name">
+</div>
+<div>
+<label>Age</label>
+<input type="number" id="age">
+</div>
+
+<div>
+<label>Annual Income (₹)</label>
+<input type="number" id="income">
+</div>
+
+<div>
+<label>Category</label>
+<select id="category">
+<option>Student</option>
+<option>Startup</option>
+<option>Farmer</option>
+<option>Youth</option>
+<option>Worker</option>
+<option>Women</option>
+<option>Innovator</option>
+<option>Business</option>
+</select>
+</div>
+
+<div>
+<label>State</label>
+<select id="state">
+    <option value="Andhra Pradesh">Andhra Pradesh</option>
+    <option value="Karnataka">Karnataka</option>
+    <option value="Telangana">Telangana</option>
+    <option value="Tamil Nadu">Tamil Nadu</option>
+</select>
+</div>
+
+</div>
+
+<button onclick="findSchemes()">
+🔍 Find Eligible Schemes
+</button>
+
+</div>
+
+<div class="loading" id="loading">
+<div class="spinner"></div>
+<p>Searching schemes...</p>
+</div>
+
+<div class="results" id="results"></div>
+
+
+<button id="pdfBtn" onclick="downloadPDF()" style="display:none;">
+📄 Download Eligibility Report
+</button>
+</div>
+ 
+
+<footer>
+Built using AWS Lambda • DynamoDB • API Gateway • Amplify
+</footer>
+<!--
+<script>
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const cards = document.querySelectorAll(".scheme-card");
+
+  // Read values properly from inputs
+  const nameVal = document.getElementById("name").value;
+  const ageVal = document.getElementById("age")?.value || age?.value || age;
+  const incomeVal = document.getElementById("income")?.value || income?.value || income;
+  const categoryVal = document.getElementById("category")?.value || category?.value || category;
+  const stateVal = document.getElementById("state").value;
+
+  // Header
+  doc.setFillColor(14, 165, 233);
+  doc.rect(0, 0, 210, 25, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(20);
+  doc.text("Citizen Scheme Eligibility Report", 15, 16);
+  doc.setTextColor(0, 0, 0);
+
+  let y = 35;
+
+  // User Details Box
+  doc.setFontSize(12);
+  doc.setDrawColor(200);
+  doc.roundedRect(12, y - 5, 185, 28, 3, 3);
+  doc.setFont(undefined, "bold");
+  doc.text("User Details", 18, y + 2);
+  doc.setFont(undefined, "normal");
+  doc.text(`Name: ${nameVal}`, 18, y + 10);
+  doc.text(`Age: ${ageVal}`, 18, y + 10);
+  doc.text(`Income: \u20B9${Number(incomeVal).toLocaleString("en-IN")}`, 18, y + 18);
+  doc.text(`Category: ${categoryVal}`, 110, y + 18);
+  doc.text(`State: ${stateVal}`, 110, y + 10);
+
+  y += 38;
+
+  // Report Timestamp
+  doc.text(`Generated: ${new Date().toLocaleString()}`, 15, y);
+  y += 12;
+
+  // Section Title
+  doc.setFontSize(16);
+  doc.setFont(undefined, "bold");
+  doc.text("Eligible Schemes", 15, y);
+  y += 10;
+
+  cards.forEach((card, index) => {
+    // New page if needed
+    if (y > 240) {
+      doc.addPage();
+      y = 20;
+    }
+
+    const badge = card.querySelector(".badge")?.innerText || "N/A";
+    const schemeName = card.querySelector("h3")?.innerText || "Scheme";
+    const paragraphs = card.querySelectorAll("p");
+    const benefit = paragraphs[0]?.innerText || "Benefit details not available";
+
+    let incomeLimit = "Income Limit: N/A";
+    if (paragraphs[1]) {
+      const raw = paragraphs[1].textContent.trim();
+      const match = raw.match(/\d+/);
+      if (match) {
+        incomeLimit = `Income Limit: \u20B9${Number(match[0]).toLocaleString("en-IN")}`;
+      }
+    }
+
+    // Scheme Box
+    doc.roundedRect(12, y - 5, 185, 40, 3, 3);
+
+    // Scheme Title
+    doc.setFontSize(13);
+    doc.setFont(undefined, "bold");
+    doc.text(`${index + 1}. ${schemeName}`, 18, y + 3);
+
+    // Details
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(11);
+    doc.text(`Category: ${badge}`, 18, y + 13);
+    doc.text(benefit, 18, y + 21);
+    doc.text(incomeLimit, 18, y + 29);
+
+    y += 50;
+  });
+
+  // Footer on all pages
+  const pages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pages; i++) {
+    doc.setPage(i);
+    doc.setFontSize(10);
+    doc.text(`Generated by Citizen Scheme Assistant | Page ${i}/${pages}`, 15, 290);
+  }
+
+  doc.save("Citizen_Scheme_Report.pdf");
+}
+
+async function findSchemes(){
+
+  const name = document.getElementById("name").value;
+  const age = document.getElementById("age").value;
+  const income = document.getElementById("income").value;
+  const category = document.getElementById("category").value;
+  const state= document.getElementById("state").value;
+
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("results").innerHTML = "";
+  document.getElementById("pdfBtn").style.display = "none";
+
+
+
+  try {
+    const response = await fetch(
+      "https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod/SchemeEligibilityFunction",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          age: Number(age),
+          income: Number(income),
+          category: category,
+          state: state
+        })
+      }
+    );
+
+    const result = await response.json();
+    console.log(result);
+
+    const schemes = Array.isArray(result) ? result : JSON.parse(result.body);
+
+    // ✅ Always declare html as a local variable first
+    let html = "";
+
+    if (schemes.length === 0) {
+      html = `
+        <div class="scheme-card">
+          <h3>No Matching Schemes Found</h3>
+          <p>Try different criteria.</p>
+        </div>`;
+    } else {
+      schemes.forEach(scheme => {
+        html += `
+          <div class="scheme-card">
+            <div class="badge">${scheme.category}</div>
+            <h3>${scheme.name}</h3>
+            <p><b>Benefit:</b> ${scheme.benefit || "Benefit details not available"}</p>
+            <p><b>Income Limit:</b> ₹${scheme.income_limit}</p>
+          </div>`;
+      });
+    }
+
+    document.getElementById("loading").style.display = "none"; // ✅ hide on success too
+    document.getElementById("results").innerHTML = html;
+    
+    if (schemes.length > 0) {
+    document.getElementById("pdfBtn").style.display = "block";
+}
+    
+
+  } catch(err) {
+    
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("results").innerHTML = `
+      <div class="scheme-card">
+        <h3>Error</h3>
+        <p>${err.message}</p>
+      </div>`;
+  }
+}
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+-->
+</body>
+</html>
