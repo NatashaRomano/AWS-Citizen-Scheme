@@ -362,7 +362,7 @@ async function verifyID() {
 
     // Step 1 - Get Upload URL
     const response = await fetch(
-        "YOUR_UPLOAD_API",
+        "https://momdhxbtol.execute-api.ap-south-1.amazonaws.com",
         {
             method: "POST"
         }
