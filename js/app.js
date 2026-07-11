@@ -335,3 +335,46 @@ key:data.fileName
 }
 
 );
+// ===============================
+// Upload Aadhaar
+// ===============================
+
+async function verifyID() {
+
+    const file = document.getElementById("aadhaar").files[0];
+
+    if (!file) {
+        alert("Please choose an Aadhaar file.");
+        return;
+    }
+
+    alert("Selected File: " + file.name);
+
+}
+async function verifyID() {
+
+    const file = document.getElementById("aadhaar").files[0];
+
+    if (!file) {
+        alert("Choose a file");
+        return;
+    }
+
+    // Step 1 - Get Upload URL
+    const response = await fetch(
+        "YOUR_UPLOAD_API",
+        {
+            method: "POST"
+        }
+    );
+
+    const data = await response.json();
+
+    // Step 2 - Upload file directly to S3
+    await fetch(data.uploadUrl, {
+        method: "PUT",
+        body: file
+    });
+
+    alert("File uploaded successfully!");
+}
