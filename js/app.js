@@ -275,3 +275,63 @@ async function downloadPDF() {
     doc.save("Citizen_Scheme_Report.pdf");
 
 }
+async function uploadFile()
+{
+    const file = document.getElementById("idProof").files[0];
+    const response = await fetch(
+
+"https://momdhxbtol.execute-api.ap-south-1.amazonaws.com",
+
+{
+
+method:"POST"
+
+}
+
+);
+
+const data = await response.json();
+await fetch(
+
+data.uploadURL,
+
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":"image/jpeg"
+
+},
+
+body:file
+
+}
+
+);
+await fetch(
+
+"https://YOURAPI.amazonaws.com/prod/verify",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+bucket:"citizen-id-proof-upload",
+
+key:data.fileName
+
+})
+
+}
+
+);
