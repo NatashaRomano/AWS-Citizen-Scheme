@@ -280,7 +280,7 @@ async function uploadFile()
     const file = document.getElementById("aadhaar").files[0];
     const response = await fetch(
 
-"https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod/upload,
+"https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod/upload",
 
 {
 
@@ -351,7 +351,7 @@ async function verifyID() {
 
     // Step 1 - Get Upload URL
     const response = await fetch(
-        "https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod,
+        "https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod",
         {
             method: "POST"
         }
