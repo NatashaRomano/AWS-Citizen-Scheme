@@ -338,19 +338,8 @@ key:data.fileName
 // ===============================
 // Upload Aadhaar
 // ===============================
-
-async function verifyID() {
-
-    const file = document.getElementById("aadhaar").files[0];
-
-    if (!file) {
-        alert("Please choose an Aadhaar file.");
-        return;
-    }
-
-    alert("Selected File: " + file.name);
-
 }
+
 async function verifyID() {
 
     const file = document.getElementById("aadhaar").files[0];
@@ -362,7 +351,7 @@ async function verifyID() {
 
     // Step 1 - Get Upload URL
     const response = await fetch(
-        "https://momdhxbtol.execute-api.ap-south-1.amazonaws.com",
+        "https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod,
         {
             method: "POST"
         }
