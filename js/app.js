@@ -277,10 +277,10 @@ async function downloadPDF() {
 }
 async function uploadFile()
 {
-    const file = document.getElementById("idProof").files[0];
+    const file = document.getElementById("aadhaar").files[0];
     const response = await fetch(
 
-"https://momdhxbtol.execute-api.ap-south-1.amazonaws.com",
+"https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod/upload,
 
 {
 
@@ -312,7 +312,7 @@ body:file
 );
 await fetch(
 
-"https://YOURAPI.amazonaws.com/prod/verify",
+"https://4k1wyl7nfg.execute-api.ap-south-1.amazonaws.com/prod/verify",
 
 {
 
